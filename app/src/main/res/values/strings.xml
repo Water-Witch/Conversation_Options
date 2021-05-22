@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Conversation Options</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_the_rip_off_version_of_a_conversation_generator_where_all_you_re_going_to_get_are_compliments_or_insults">Welcome to the rip off version of a conversation generator where all you\'re going to get are compliments or insults.</string>
 </resources>

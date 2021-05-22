@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/titleFragment">
+
+    <fragment
+        android:id="@+id/titleFragment"
+        android:name="com.example.conversationoptions.TitleFragment"
+        android:label="fragment_title"
+        tools:layout="@layout/fragment_title" >
+        <action
+            android:id="@+id/action_titleFragment_to_secondFragment"
+            app:destination="@id/secondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="com.example.conversationoptions.SecondFragment"
+        android:label="fragment_second"
+        tools:layout="@layout/fragment_second" >
+        <action
+            android:id="@+id/action_secondFragment_to_insultFragment"
+            app:destination="@id/insultFragment" />
+        <action
+            android:id="@+id/action_secondFragment_to_complimentFragment"
+            app:destination="@id/complimentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/insultFragment"
+        android:name="com.example.conversationoptions.insultFragment"
+        android:label="fragment_insult"
+        tools:layout="@layout/fragment_insult" />
+    <fragment
+        android:id="@+id/complimentFragment"
+        android:name="com.example.conversationoptions.complimentFragment"
+        android:label="fragment_compliment"
+        tools:layout="@layout/fragment_compliment" />
+</navigation>
