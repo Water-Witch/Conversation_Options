@@ -1,13 +1,24 @@
 package com.example.conversationoptions
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.conversationoptions.models.MyCompliment
+import com.example.conversationoptions.models.MyInsult
+import com.example.conversationoptions.services.ComplimentService
+import com.example.conversationoptions.services.InsultService
+import com.example.conversationoptions.services.ServiceBuilder
 import kotlinx.android.synthetic.main.fragment_second.view.*
 import kotlinx.android.synthetic.main.fragment_title.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 /**
@@ -16,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_title.view.*
  * create an instance of this fragment.
  */
 class SecondFragment : Fragment() {
-
+    val TAG = "Compliment Fragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +41,52 @@ class SecondFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_second, container, false)
 
         rootView.button_secondFragment_insults.setOnClickListener { view: View ->
-
-            view.findNavController().navigate(R.id.action_secondFragment_to_insultFragment)
+            loadInsults()
         }
         rootView.button_secondFragment_compliments.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_secondFragment_to_complimentFragment)
+            loadCompliments()
         }
         return rootView
+    }
+
+    private fun loadCompliments() {
+        val destinationService = ServiceBuilder.buildService(ComplimentService::class.java)
+        val requestCall = destinationService.getComplimentsList()
+
+        requestCall.enqueue(object: Callback<MyCompliment> {
+            override fun onFailure(call: Call<MyCompliment>, t: Throwable) {
+                Log.d(TAG, "onResponse: well you failed" + t.message)
+            }
+
+            override fun onResponse(call: Call<MyCompliment>, response: Response<MyCompliment>) {
+                val compliment = response.body()?.compliment ?: "ur nose hairs look nice today"
+                Log.d(TAG, "onResponse: " + compliment)
+                val bundle = bundleOf("compliment" to compliment)
+                findNavController().navigate(R.id.action_secondFragment_to_complimentFragment, bundle)
+
+            }
+
+        })
+    }
+
+    private fun loadInsults() {
+        val destinationService = ServiceBuilder.buildInsultService(InsultService::class.java)
+        val requestCall = destinationService.getInsultsList("en", "json")
+
+        requestCall.enqueue(object: Callback<MyInsult> {
+            override fun onFailure(call: Call<MyInsult>, t: Throwable) {
+                Log.d(TAG, "onResponse: well you failed" + t.message)
+            }
+
+            override fun onResponse(call: Call<MyInsult>, response: Response<MyInsult>) {
+                val insult = response.body()?.insult ?: "ur arms are too fleshy"
+                Log.d(TAG, "onResponse: " + insult)
+                val bundle = bundleOf("insult" to insult)
+                findNavController().navigate(R.id.action_secondFragment_to_insultFragment, bundle)
+
+            }
+
+        })
     }
 
     companion object {
